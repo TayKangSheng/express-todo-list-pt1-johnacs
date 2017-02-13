@@ -42,7 +42,7 @@ router.get('/:id', function (req, res, next) {
 
 // update route
 router.put('/:id', function (req, res, next) {
-  toDo.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, output) {
+  toDo.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true}, function (err, output) {
     if (err) {
       return next(err)
     }
