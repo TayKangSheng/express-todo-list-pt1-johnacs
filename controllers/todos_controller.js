@@ -1,4 +1,7 @@
-const Todo = require('../models/todo')
+const express = require('express')
+const router = express.Router()
+
+const toDo = require('../models/todo')
 
 // TODO. import express and create a Router, replace the methods below with routes e.g.
 // router.post('/', function(req,res) => {
@@ -6,52 +9,58 @@ const Todo = require('../models/todo')
 //    res.json(todo)
 //  }
 // })
-
-function create (params) {
-  Todo.create(params, function (err, todo) {
+// RESTful routes from todosdb mongodb
+router.get('/', function (req, res, next) {
+  toDo.find({}, function (err, output) {
     if (err) {
-      console.log(err)
-      return
+      return next(err)
     }
-    console.log(todo)
+    res.send(output)
+    // res.render('index', {
+    //   alltoDos: output
+    // }) // relative to 'views folder'
   })
-}
+})
 
-function list () {
-  Todo.find({}, function (err, todos) {
+router.post('/', function (req, res, next) {
+  toDo.create(req.body, function (err, output) {
     if (err) {
-      console.log(err)
-      return
+      return next(err)
     }
-    console.log(todos)
+    res.send(output)
   })
-}
+})
 
-function show (id) {
-  Todo.findById(id, function (err, todo) {
-    if (err) return console.log(err)
-    console.log(todo)
+router.get('/:id', function (req, res, next) {
+  toDo.findById(req.params.id, function (err, output) {
+    if (err) {
+      return next(err)
+    }
+    res.send(output)
   })
-}
+})
 
-function update (id, params) {
-  Todo.findOneAndUpdate({ _id: id }, params, function (err, todo) {
-    if (err) console.log(err)
-    console.log(todo)
+// update route
+router.put('/:id', function (req, res, next) {
+  toDo.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, output) {
+    if (err) {
+      return next(err)
+    }
+
+    res.send(output)
   })
-}
+})
 
-function destroy (id) {
-  Todo.findOneAndRemove({ _id: id }, function (err) {
-    if (err) console.log(err)
-    console.log('User deleted!')
+// delete route
+router.delete('/:id', function (req, res, next) {
+  toDo.findByIdAndRemove(req.params.id, function (err, output) {
+    if (err) {
+      return next(err)
+    }
+    res.send({
+      message: 'deleted document with id: ' + req.params.id
+    })
   })
-}
+})
 
-module.exports = {
-  create,
-  list,
-  show,
-  update,
-  destroy
-}
+module.exports = router
