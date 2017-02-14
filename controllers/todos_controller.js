@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
     if (err) {
       return next(err)
     }
-    res.send(output)
+    // res.send(output)
     res.render('todos/index', {
       alltoDos: output
     }) // relative to 'views folder'
