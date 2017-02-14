@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>all Todos</title>
+</head>
+
+<body>
+    <h2>All ToDos</h2>
+    <ul>
+        <% alltoDos.forEach(function(todo){ %>
+            <li>
+                <h3>Task: <%= todo.name %></h3>
+                <p>Description: <%= todo.description %></p>
+                <p>Completed: <%= todo.completed %></p>
+            </li>
+
+            <%})%>
+    </ul>
+</body>
+
+</html>
