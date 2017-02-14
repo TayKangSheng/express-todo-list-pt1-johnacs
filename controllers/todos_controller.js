@@ -15,10 +15,10 @@ router.get('/', function (req, res, next) {
     if (err) {
       return next(err)
     }
-    // res.send(output)
-    res.render('todos/index', {
-      alltoDos: output
-    }) // relative to 'views folder'
+    res.send(output)
+    // res.render('index', {
+    //   alltoDos: output
+    // }) // relative to 'views folder'
   })
 })
 
